@@ -878,15 +878,7 @@ ionic.views.Scroll = ionic.views.View.inherit({
       }
     });
 
-    if ('ontouchstart' in window) {
-      // Touch Events
-      container.addEventListener("touchstart", self.touchStart, false);
-      if(self.options.preventDefault) container.addEventListener("touchmove", self.touchMoveBubble, false);
-      document.addEventListener("touchmove", self.touchMove, false);
-      document.addEventListener("touchend", self.touchEnd, false);
-      document.addEventListener("touchcancel", self.touchEnd, false);
-
-    } else if (window.navigator.pointerEnabled) {
+    if (window.navigator.pointerEnabled) {
       // Pointer Events
       container.addEventListener("pointerdown", self.touchStart, false);
       if(self.options.preventDefault) container.addEventListener("pointermove", self.touchMoveBubble, false);
@@ -905,6 +897,19 @@ ionic.views.Scroll = ionic.views.View.inherit({
       document.addEventListener("wheel", self.mouseWheel, false);
 
     } else {
+      // Allow touch or mouse events. The preventDefault() call in self.touchStart
+      // stops the touches from generating the resulting mouse and click events.
+      // While allowing actual mouse events to proceed as normal.
+      if ('ontouchstart' in window) {
+        // Touch Events
+        container.addEventListener("touchstart", self.touchStart, false);
+        if(self.options.preventDefault) container.addEventListener("touchmove", self.touchMoveBubble, false);
+        document.addEventListener("touchmove", self.touchMove, false);
+        document.addEventListener("touchend", self.touchEnd, false);
+        document.addEventListener("touchcancel", self.touchEnd, false);
+
+      }
+
       // Mouse Events
       var mousedown = false;
 

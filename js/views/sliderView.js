@@ -299,7 +299,7 @@ ionic.views.Slider = ionic.views.View.inherit({
         delta = {};
 
         // attach touchmove and touchend listeners
-        if(browser.touch) {
+        if(browser.touch && event.type == 'touchstart') {
           element.addEventListener('touchmove', this, false);
           element.addEventListener('touchend', this, false);
         } else {
@@ -370,7 +370,7 @@ ionic.views.Slider = ionic.views.View.inherit({
         }
 
       },
-      end: function() {
+      end: function(event) {
 
         // measure duration
         var duration = +new Date() - start.time;
@@ -448,7 +448,7 @@ ionic.views.Slider = ionic.views.View.inherit({
         }
 
         // kill touchmove and touchend event listeners until touchstart called again
-        if(browser.touch) {
+        if(browser.touch && event.type == 'touchend') {
           element.removeEventListener('touchmove', events, false);
           element.removeEventListener('touchend', events, false);
         } else {
@@ -587,9 +587,8 @@ ionic.views.Slider = ionic.views.View.inherit({
         // set touchstart event on element
         if (browser.touch) {
           element.addEventListener('touchstart', events, false);
-        } else {
-          element.addEventListener('mousedown', events, false);
         }
+        element.addEventListener('mousedown', events, false);
 
         if (browser.transitions) {
           element.addEventListener('webkitTransitionEnd', events, false);
